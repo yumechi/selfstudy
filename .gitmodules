@@ -1,3 +1,6 @@
 [submodule "elixir"]
 	path = elixir
 	url = https://github.com/yumechi/elixir_practice.git
+[submodule "javascript"]
+	path = javascript
+	url = https://github.com/yumechi/javascript_practice.git

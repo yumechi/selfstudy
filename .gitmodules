@@ -4,3 +4,6 @@
 [submodule "javascript"]
 	path = javascript
 	url = https://github.com/yumechi/javascript_practice.git
+[submodule "python"]
+	path = python
+	url = https://github.com/yumechi/python_practice.git

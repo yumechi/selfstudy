@@ -7,3 +7,6 @@
 [submodule "python"]
 	path = python
 	url = https://github.com/yumechi/python_practice.git
+[submodule "crystal"]
+	path = crystal
+	url = https://github.com/yumechi/Crystal_practice.git

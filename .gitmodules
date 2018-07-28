@@ -10,3 +10,6 @@
 [submodule "crystal"]
 	path = crystal
 	url = https://github.com/yumechi/Crystal_practice.git
+[submodule "rust"]
+	path = rust
+	url = git@github.com:yumechi/Rust_practice.git

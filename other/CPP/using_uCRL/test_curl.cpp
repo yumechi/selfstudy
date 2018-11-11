@@ -3,67 +3,70 @@
 #include<string>
 #include<cassert>
 #include "unistd.h"
-
 #include<curl/curl.h>
 
 #include "picojson.h"
 
-using namespace std;
-
-size_t onReceive(char* ptr, size_t size, size_t nmemb, string* stream) {
+size_t onReceive(char* ptr, size_t size, size_t nmemb, std::string* stream) {
     const size_t sizes = size * nmemb;
     stream->append(ptr, sizes);
     return sizes;
 }
 
-int main(int argc, const char* argv[]) {
+std::string get_responce() {
     CURL *curl = curl_easy_init();
     if(curl == nullptr) {
-        cerr << "curl init error" << endl;
+        std::cerr << "curl init error" << std::endl;
         curl_easy_cleanup(curl);
-        return 1;
+        exit(1);
     }
 
-    string responceData;
+    std::string ret;
     // setup
     curl_easy_setopt(curl, CURLOPT_URL, "https://supporterzcolab.com/api/v1/event/?event_id=586");
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 15);
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, onReceive);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responceData);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &ret);
 
     CURLcode res = curl_easy_perform(curl);
+    // using sleep time, Succeed
     sleep(5);
     curl_easy_cleanup(curl);
     if(res != CURLE_OK) {
-        cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << endl;
-        return 1;
+        std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+        exit(1);
     }
-    if(responceData.length() == 0) {
-        cerr << "respnceData is null, maybe timeout" << endl;
-        cerr << "responceData: " << responceData << endl;
-        return 0;
+    if(ret.length() == 0) {
+        std::cerr << "respnceData is null, maybe timeout" << std::endl;
+        std::cerr << "responceData: " << ret << std::endl;
+        exit(1);
     }
+    return ret;
+}
 
+int main(int argc, const char* argv[]) {
     // debug 
-    cerr << responceData.length() << endl;
-
+    std::string responce = get_responce();
+#if DEBUG
+    std::cerr << responce.length() << std::endl;
+#endif
     picojson::value json_val;
-    string err_check = picojson::parse(json_val, responceData);
+    std::string err_check = picojson::parse(json_val, responce);
     if (!err_check.empty()) {
-        cerr << "json parse error: " << err_check << endl;
+        std::cerr << "json parse error: " << err_check << std::endl;
         return 1;
     }
 
     picojson::object& obj = json_val.get<picojson::object>();
     picojson::array& events = obj["events"].get<picojson::array>();
-    string title, started_at;
+    std::string title, started_at;
     for(const auto& event : events) {
-        title = event.get<picojson::object>().at("title").get<string>();
-        started_at = event.get<picojson::object>().at("started_at").get<string>();
+        title = event.get<picojson::object>().at("title").get<std::string>();
+        started_at = event.get<picojson::object>().at("started_at").get<std::string>();
     }
-    cout << title << endl;
-    cout << started_at << endl;
+    std::cout << title << std::endl;
+    std::cout << started_at << std::endl;
 
     return 0;
 }

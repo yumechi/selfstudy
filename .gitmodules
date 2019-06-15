@@ -1,12 +1,15 @@
 [submodule "elixir"]
 	path = elixir
-	url = https://github.com/yumechi/elixir_practice.git
+	url = git@github.com:yumechi/elixir_practice.git
 [submodule "javascript"]
 	path = javascript
-	url = https://github.com/yumechi/javascript_practice.git
+	url = git@github.com:yumechi/javascript_practice.git
 [submodule "crystal"]
 	path = crystal
-	url = https://github.com/yumechi/Crystal_practice.git
+	url = git@github.com:yumechi/Crystal_practice.git
 [submodule "rust"]
 	path = rust
 	url = git@github.com:yumechi/Rust_practice.git
+[submodule "python"]
+	path = python
+	url = git@github.com:yumechi/python_practice.git
